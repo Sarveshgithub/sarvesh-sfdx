@@ -36,11 +36,11 @@ jobs:
       - run:
           name: Converting to MDAPI format...
           command: |
-            sfdx force:source:convert -d deploy_prod -r force-app
+            node_modules/sfdx-cli/bin/run sfdx force:source:convert -d deploy_prod -r force-app
       - run:
           name: Deploying to production & running all tests...
           command: |
-            sfdx force:mdapi:deploy -u DevHub -d deploy_prod/ -w -1 -l RunAllTestsInOrg
+            node_modules/sfdx-cli/bin/run sfdx force:mdapi:deploy -u DevHub -d deploy_prod/ -w -1 -l RunAllTestsInOrg
       - store_artifacts:
           path: ~/apex_tests
       - store_test_results:
