@@ -9,7 +9,8 @@ public with sharing class DataTableController_Test {
     static void getRecords_Test(){
         
         Test.startTest();
-        System.runAs(UserInfo.getUserId()){
+        User testUser = [Select id from user where id = :UserInfo.getUserId()];
+        System.runAs(testUser){
             DataTableController.getRecords('Select id from contact limit 10');
         }
         Test.stopTest();
@@ -18,8 +19,9 @@ public with sharing class DataTableController_Test {
 
     @IsTest
     static void countRecords_Test(){
+        User testUser = [Select id from user where id = :UserInfo.getUserId()];
         Test.startTest();
-        System.runAs(UserInfo.getUserId()){
+        System.runAs(testUser){
             DataTableController.countRecords('Contact');
             DataTableController.countRecords(null);
         }
