@@ -1,5 +1,9 @@
 {
-  "orgName": "Demo company",
+  "orgName": "Sarvesh",
   "edition": "Developer",
-  "features": []
+  "orgPreferences": {
+    "enabled": [
+      "S1DesktopEnabled"
+    ]
+  }
 }
