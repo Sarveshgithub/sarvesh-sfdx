@@ -8,8 +8,8 @@ public with sharing class DataTableController {
 		if(String.isNotEmpty(objectName)) {
 			return database.countQuery('SELECT count() FROM ' + objectName);
 		}
+		System.debug('Test available gone');
 		return 0;
-	System.debug('Test available gone');
 
 	}
 
