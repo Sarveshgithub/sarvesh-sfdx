@@ -45,3 +45,18 @@ jobs:
           path: ~/apex_tests
       - store_test_results:
           path: ~/apex_tests
+
+workflows:
+  version: 2
+  validate:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - master
+      - deploy-prod:
+          filters:
+            branches:
+              only:
+                - master
