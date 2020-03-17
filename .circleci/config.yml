@@ -28,16 +28,19 @@ jobs:
           name: Create Scratch Org
           command: |
             node_modules/sfdx-cli/bin/run force:auth:jwt:grant --clientid $CONSUMERKEY --jwtkeyfile assets/server.key --username $USERNAME --setdefaultdevhubusername -a DevHub
-            node_modules/sfdx-cli/bin/run force:org:create -v DevHub -s -f config/project-scratch-def.json -a scratch
       - run:
           name: Remove Server Key
           when: always
           command: |
             rm assets/server.key
       - run:
-          name: Push Source
+          name: Converting to MDAPI format...
           command: |
-            node_modules/sfdx-cli/bin/run force:source:push -u scratch
+            sfdx force:source:convert -d deploy_prod -r force-app
+      - run:
+          name: Deploying to production & running all tests...
+          command: |
+            sfdx force:mdapi:deploy -u DevHub -d deploy_prod/ -w -1 -l RunAllTestsInOrg
       - store_artifacts:
           path: ~/apex_tests
       - store_test_results:
