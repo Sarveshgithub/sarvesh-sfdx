@@ -9,8 +9,8 @@ public with sharing class DataTableController {
 			return database.countQuery('SELECT count() FROM ' + objectName);
 		}
 		return 0;
+	System.debug('Test available gone');
 
-		
 	}
 
 }
