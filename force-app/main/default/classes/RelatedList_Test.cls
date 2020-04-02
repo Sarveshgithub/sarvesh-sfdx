@@ -1,17 +1,12 @@
 @isTest
-public with sharing class DataTableController_Test {
-    public DataTableController_Test() {
-
-    }
-
-
+public with sharing class RelatedList_Test {
     @IsTest
     static void getRecords_Test(){
         
         Test.startTest();
         User testUser = [Select id from user where id = :UserInfo.getUserId()];
         System.runAs(testUser){
-            DataTableController.getRecords('Select id from contact limit 10');
+            RelatedList.getRecords('Select id from contact limit 10');
         }
         Test.stopTest();
         
@@ -22,8 +17,8 @@ public with sharing class DataTableController_Test {
         User testUser = [Select id from user where id = :UserInfo.getUserId()];
         Test.startTest();
         System.runAs(testUser){
-            DataTableController.countRecords('Contact');
-            DataTableController.countRecords(null);
+            RelatedList.countRecords('Contact');
+            RelatedList.countRecords(null);
         }
         Test.stopTest();
         

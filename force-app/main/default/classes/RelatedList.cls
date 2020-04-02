@@ -1,4 +1,4 @@
-public with sharing class DataTableController {
+public with sharing class RelatedList {
 	@AuraEnabled public static List<SObject> getRecords(String soql) {
 		System.debug('soql::' + soql);
 		return Database.query(soql);
@@ -8,9 +8,6 @@ public with sharing class DataTableController {
 		if(String.isNotEmpty(objectName)) {
 			return database.countQuery('SELECT count() FROM ' + objectName);
 		}
-		System.debug('Test dev branch');
 		return 0;
-
 	}
-
 }
