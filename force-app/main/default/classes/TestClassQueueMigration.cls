@@ -13,7 +13,7 @@
                        FROM
                        QueueSObject
                        WHERE
-                       Queue.Type = :LeadConstant.OBJECT_NAME_QUEUE
+                       Queue.Type = 'Queue'
                        AND Queue.Name = :queueName LIMIT 1].Queue.Name;
            }
    }
