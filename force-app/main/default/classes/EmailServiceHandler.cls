@@ -1,14 +1,10 @@
 public with sharing class EmailServiceHandler{
-	public EmailServiceHandler(){
-	}
-
 	public static void sendEmail(){
 		Messaging.SingleEmailMessage message = new Messaging.SingleEmailMessage();
 		message.toAddresses = new String[]{'sarveshkumar574@gmail.com'};
-		message.optOutPolicy = 'FILTER';
 		message.subject = 'Subject Test Message';
-        message.plainTextBody = 'This is the message body.';
-        message.setHtmlBody(getTableEmailBody());
+		message.plainTextBody = 'This is the message body.';
+		message.setHtmlBody(getTableEmailBody());
 		Messaging.SingleEmailMessage[] messages = new List<Messaging.SingleEmailMessage>{message};
 		Messaging.SendEmailResult[] results = Messaging.sendEmail(messages);
 		if (results[0].success){
@@ -20,13 +16,13 @@ public with sharing class EmailServiceHandler{
 
 	public static string getTableEmailBody(){
 		String htmlBody = '';
-         htmlBody += '<p>This is test emaildfffffffffffffffffffffffffffffdfdfd</p>';
+		htmlBody += '<p>Below is the present list of contact data in your org</p>';
 		//open table..
-		htmlBody += '<table border="1" style="border-collapse: collapse"><caption>Request Summary Data</caption><tr><th>RecordId</th><th>FirstName</th><th>LastName</th></tr>';
+		htmlBody += '<table border="1" style="border-collapse: collapse"><caption>Contact Data</caption><tr><th>RecordId</th><th>FirstName</th><th>LastName</th></tr>';
 		//iterate over list and output columns/data into table rows...
 		for (Contact con : [SELECT 
 		                          Id, 
-                            	  Name,
+		                          Name, 
 		                          FirstName, 
 		                          LastName
 		                    FROM Contact
@@ -39,12 +35,10 @@ public with sharing class EmailServiceHandler{
 			if (con.LastName == null){
 				lastName = '[Not Provided]';
 			}
-                                
-			htmlBody += '<tr><td><a href="'+URL.getSalesforceBaseUrl().toExternalForm()+'/'+con.Id+'">'+con.Name+'</a></td><td>' + firstname + '</td><td>' + lastName + '</td></tr>';
+			htmlBody += '<tr><td><a href="' + URL.getSalesforceBaseUrl().toExternalForm() + '/' + con.Id + '">' + con.Name + '</a></td><td>' + firstname + '</td><td>' + lastName + '</td></tr>';
 		}
 		//close table...
 		htmlBody += '</table>';
-		system.debug('Email Body: ' + htmlBody);
 		return htmlBody;
 	}
 }
