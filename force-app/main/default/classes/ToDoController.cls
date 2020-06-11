@@ -14,7 +14,7 @@ public with sharing class ToDoController{
 
 	@AuraEnabled
 	public static Boolean updateTask(Id taskId, String description, String status){
-		insert new Task(Id = taskId, Description = description, Status = status);
+		update new Task(Id = taskId, Description = description, Status = status);
 		return true;
 	}
 
