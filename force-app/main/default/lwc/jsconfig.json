@@ -8,6 +8,9 @@
             ],
             "c/lwcGenericFilterDataTable": [
                 "lwcGenericFilterDataTable/lwcGenericFilterDataTable.js"
+            ],
+            "c/lwcToDoApp": [
+                "lwcToDoApp/lwcToDoApp.js"
             ]
         }
     },
