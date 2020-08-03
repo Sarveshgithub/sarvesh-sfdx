@@ -101,11 +101,11 @@ workflows:
   version: 2
   validate:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore:
-                - master
+      # - build:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - master
       - deploy-prod:
           filters:
             branches:
