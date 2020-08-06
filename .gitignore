@@ -1,3 +1,4 @@
 .sfdx
 server.crt
 .localdevserver
+node_modules
