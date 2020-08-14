@@ -3,14 +3,14 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/lwcRelatedList": [
-                "lwcRelatedList/lwcRelatedList.js"
-            ],
             "c/lwcGenericFilterDataTable": [
                 "lwcGenericFilterDataTable/lwcGenericFilterDataTable.js"
             ],
-            "c/lwcToDoApp": [
-                "lwcToDoApp/lwcToDoApp.js"
+            "c/lwcRelatedList": [
+                "lwcRelatedList/lwcRelatedList.js"
+            ],
+            "c/lwcUserPermission": [
+                "lwcUserPermission/lwcUserPermission.js"
             ]
         }
     },

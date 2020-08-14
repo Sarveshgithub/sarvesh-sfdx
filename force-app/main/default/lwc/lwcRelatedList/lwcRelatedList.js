@@ -14,7 +14,7 @@ let cols;
 const actions = [
   { label: "Show details", name: "show_details" },
   { label: "Edit", name: "edit" },
-  { label: "Delete", name: "delete" },
+  { label: "Delete", name: "delete" }
 ];
 export default class LightningDatatable extends NavigationMixin(
   LightningElement
@@ -42,7 +42,7 @@ export default class LightningDatatable extends NavigationMixin(
     }
     cols.push({
       type: "action",
-      typeAttributes: { rowActions: actions },
+      typeAttributes: { rowActions: actions }
     });
     this.columns = cols;
     this.buildSOQL();
@@ -86,8 +86,8 @@ export default class LightningDatatable extends NavigationMixin(
       type: "standard__objectPage",
       attributes: {
         objectApiName: this.objectName,
-        actionName: "new",
-      },
+        actionName: "new"
+      }
     });
   }
 
@@ -185,8 +185,8 @@ export default class LightningDatatable extends NavigationMixin(
       attributes: {
         recordId: row["Id"],
         objectApiName: this.objectName,
-        actionName: "view",
-      },
+        actionName: "view"
+      }
     });
   }
 
@@ -196,8 +196,8 @@ export default class LightningDatatable extends NavigationMixin(
       attributes: {
         recordId: row["Id"],
         objectApiName: this.objectName,
-        actionName: "edit",
-      },
+        actionName: "edit"
+      }
     });
   }
 
@@ -247,7 +247,7 @@ export default class LightningDatatable extends NavigationMixin(
       new ShowToastEvent({
         title: title,
         message: message,
-        variant: variant,
+        variant: variant
       })
     );
   }
