@@ -1,22 +1,32 @@
 import { LightningElement, api, track } from "lwc";
-
+import UserId from "@salesforce/user/Id";
+import getUserPermission from "@salesforce/apex/UserPermissionsUtility.getUserPermission";
 export default class LwcUserPermission extends LightningElement {
-  @api childObjectApiName = "User"; //Contact is the default value
-  @api targetFieldApiName = "Id"; //AccountId is the default value
-  @api fieldLabel = "Your field label here";
-  @api disabled = false;
-  @api value;
-  @api required = false;
-
-  handleChange(event) {
-    // Creates the event
-    const selectedEvent = new CustomEvent("valueselected", {
-      detail: event.detail.value
-    });
-    //dispatching the custom event
-    this.dispatchEvent(selectedEvent);
+  @track objectAPIName = "Contact";
+  @track fieldAPIName = "Field1__c";
+  handleSearch(event) {
+    console.log(
+      "object name and field name",
+      this.objectAPIName,
+      this.fieldAPIName,
+      UserId
+    );
+    getUserPermission({
+      objectName: this.objectAPIName,
+      fieldAPI: this.fieldAPIName,
+      userId: "0052w000002VemN"
+    })
+      .then((data) => {
+        console.log("data::", data);
+      })
+      .catch((error) => {});
   }
-
+  handleObjectName(event) {
+    this.objectAPIName = event.target.value;
+  }
+  handleFieldName(event) {
+    this.fieldAPIName = event.target.value;
+  }
   @api isValid() {
     if (this.required) {
       this.template.querySelector("lightning-input-field").reportValidity();
