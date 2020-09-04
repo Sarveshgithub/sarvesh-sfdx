@@ -17,7 +17,7 @@ export default class LwcUserPermission extends LightningElement {
       userId: "0052w000002VemN"
     })
       .then((data) => {
-        console.log("data::", data);
+        console.log("data::", JSON.parse(JSON.stringify(data)));
       })
       .catch((error) => {});
   }

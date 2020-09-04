@@ -3,26 +3,47 @@ public with sharing class UserPermissionsUtility {
   public static String OBJECT_TYPE = 'OBJECT';
   public class PermissionWrapper {
     @AuraEnabled
-    public String Id;
+    public String recId { get; set; }
     @AuraEnabled
-    public String permType;
+    public String permType { get; set; }
     @AuraEnabled
-    public String profileId;
+    public String profileId { get; set; }
     @AuraEnabled
-    public String permissionSetId;
+    public String permissionSetId { get; set; }
     @AuraEnabled
-    public Boolean isOwnedByProfile;
+    public Boolean isOwnedByProfile { get; set; }
     @AuraEnabled
-    public String permissionSetName;
+    public String permissionSetName { get; set; }
     @AuraEnabled
-    public String profileName;
+    public String profileName { get; set; }
     @AuraEnabled
-    public List<FieldPermissions> lstFieldPermissions;
+    public List<FieldPermissions> lstFieldPermissions { get; set; }
     @AuraEnabled
-    public ObjectPermissions objectPermission;
+    public ObjectPermissions objectPermission { get; set; }
+    public PermissionWrapper(
+      String recId,
+      String permType,
+      String profileId,
+      String permissionSetId,
+      Boolean isOwnedByProfile,
+      String permissionSetName,
+      String profileName,
+      List<FieldPermissions> lstFieldPermissions,
+      ObjectPermissions objectPermission
+    ) {
+      this.recId = recId;
+      this.permType = permType;
+      this.profileId = profileId;
+      this.permissionSetId = permissionSetId;
+      this.isOwnedByProfile = isOwnedByProfile;
+      this.permissionSetName = permissionSetName;
+      this.profileName = profileName;
+      this.lstFieldPermissions = lstFieldPermissions;
+      this.objectPermission = objectPermission;
+    }
   }
   @AuraEnabled
-  public static List<PermissionSet> getUserPermission(
+  public static List<PermissionWrapper> getUserPermission(
     String objectName,
     String fieldAPI,
     String userId
@@ -42,6 +63,8 @@ public with sharing class UserPermissionsUtility {
       WHERE Field = :fieldAPI AND SobjectType = :objectName
     ]) {
       if (mapPermission.containsKey(fieldPerm.ParentId)) {
+        mapPermission.get(fieldPerm.ParentId)
+          .lstFieldPermissions.add(fieldPerm);
       } else {
         mapPermission.put(
           fieldPerm.ParentId,
@@ -50,7 +73,7 @@ public with sharing class UserPermissionsUtility {
             FIELD_TYPE,
             fieldPerm.Parent.ProfileId,
             fieldPerm.ParentId,
-            Boolean.valueOf(fieldPerm.Parent.IsOwnedByProfile),
+            fieldPerm.Parent.IsOwnedByProfile,
             fieldPerm.Parent.Name,
             fieldPerm.Parent.Profile.Name,
             new List<FieldPermissions>{ fieldPerm },
@@ -59,6 +82,6 @@ public with sharing class UserPermissionsUtility {
         );
       }
     }
-    return null;
+    return mapPermission.values();
   }
 }
