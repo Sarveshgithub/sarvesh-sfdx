@@ -48,20 +48,24 @@ public with sharing class UserPermissionsUtility {
     String fieldAPI,
     String userId
   ) {
+    List<String> fieldCondition = new List<String>();
+    List<String> objectCondition = new List<String>();
     Map<String, PermissionWrapper> mapPermission = new Map<String, PermissionWrapper>();
-    for (FieldPermissions fieldPerm : [
-      SELECT
-        Id,
-        SobjectType,
-        Field,
-        ParentId,
-        Parent.Name,
-        Parent.IsOwnedByProfile,
-        Parent.ProfileId,
-        Parent.Profile.Name
-      FROM FieldPermissions
-      WHERE Field = :fieldAPI AND SobjectType = :objectName
-    ]) {
+    String fieldSOQL = 'SELECT Id,SobjectType,Field,ParentId,Parent.Name,Parent.IsOwnedByProfile,Parent.ProfileId,Parent.Profile.Name FROM FieldPermissions';
+    if (String.isNotBlank(objectName)) {
+      fieldCondition.add('IN : ' + objectName.split(','));
+    }
+    if (String.isNotBlank(fieldAPI)) {
+      fieldCondition.add('IN : ' + fieldAPI.split(','));
+    }
+    if (fieldCondition.size() > 0) {
+      fieldSOQL += String.join(fieldCondition, ' AND ');
+    }
+    for (
+      FieldPermissions fieldPerm : (List<FieldPermissions>) Database.query(
+        fieldSOQL
+      )
+    ) {
       if (mapPermission.containsKey(fieldPerm.ParentId)) {
         mapPermission.get(fieldPerm.ParentId)
           .lstFieldPermissions.add(fieldPerm);
