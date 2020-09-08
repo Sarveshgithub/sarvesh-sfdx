@@ -44,24 +44,47 @@ public with sharing class UserPermissionsUtility {
   }
   @AuraEnabled
   public static List<PermissionWrapper> getUserPermission(
-    String objectName,
-    String fieldAPI,
+    List<String> lstObjectName,
+    List<String> lstFieldName,
     String userId
   ) {
+    List<String> fieldCondition = new List<String>();
+    List<String> objectCondition = new List<String>();
     Map<String, PermissionWrapper> mapPermission = new Map<String, PermissionWrapper>();
-    for (FieldPermissions fieldPerm : [
-      SELECT
-        Id,
-        SobjectType,
-        Field,
-        ParentId,
-        Parent.Name,
-        Parent.IsOwnedByProfile,
-        Parent.ProfileId,
-        Parent.Profile.Name
-      FROM FieldPermissions
-      WHERE Field = :fieldAPI AND SobjectType = :objectName
-    ]) {
+    String fieldSOQL = 'SELECT Id,SobjectType,Field,ParentId,PermissionsEdit,PermissionsRead,Parent.Name,Parent.IsOwnedByProfile,Parent.ProfileId,Parent.Profile.Name FROM FieldPermissions';
+    if (lstObjectName.size() > 0) {
+      Integer objCount = 0;
+      for (String obj : lstObjectName) {
+        lstObjectName[objCount] = '\'' + obj + '\'';
+        objCount++;
+      }
+      fieldCondition.add(
+        ' SobjectType IN  (' +
+        String.join(lstObjectName, ',') +
+        ')'
+      );
+    }
+    if (lstFieldName.size() > 0) {
+      Integer objCount = 0;
+      for (String obj : lstFieldName) {
+        lstFieldName[objCount] = '\'' + obj + '\'';
+        objCount++;
+      }
+      fieldCondition.add(
+        ' Field IN  (' +
+        String.join(lstFieldName, ',') +
+        ')'
+      );
+    }
+    if (fieldCondition.size() > 0) {
+      fieldSOQL += ' WHERE ' + String.join(fieldCondition, ' AND ');
+    }
+    System.debug('fieldSOQL:::' + fieldSOQL);
+    for (
+      FieldPermissions fieldPerm : (List<FieldPermissions>) Database.query(
+        fieldSOQL
+      )
+    ) {
       if (mapPermission.containsKey(fieldPerm.ParentId)) {
         mapPermission.get(fieldPerm.ParentId)
           .lstFieldPermissions.add(fieldPerm);
