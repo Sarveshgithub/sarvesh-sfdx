@@ -27,9 +27,18 @@
                                 <template if:true={obj.isOwnedByProfile}>
                                     <lightning-accordion-section key={obj.profileId} name={obj.profileName}
                                         label={obj.profileName}>
-                                        <lightning-datatable key-field="Id" data={obj.lstFieldPermissions}
-                                            columns={fieldCols} hide-checkbox-column>
-                                        </lightning-datatable>
+                                        <template if:true={obj.objectPermission}>
+                                            <h1>Object Permession</h1>
+                                            <lightning-datatable key-field="Id" data={obj.objectPermission}
+                                                columns={objectCols} hide-checkbox-column>
+                                            </lightning-datatable>
+                                        </template>
+                                        <template if:true={obj.lstFieldPermissions}>
+                                            <h1>Fields Permission</h1>
+                                            <lightning-datatable key-field="Id" data={obj.lstFieldPermissions}
+                                                columns={fieldCols} hide-checkbox-column>
+                                            </lightning-datatable>
+                                        </template>
                                     </lightning-accordion-section>
                                 </template>
                             </template>
@@ -41,9 +50,18 @@
                                 <template if:false={obj.isOwnedByProfile}>
                                     <lightning-accordion-section key={obj.permissionSetId} name={obj.permissionSetName}
                                         label={obj.permissionSetName}>
-                                        <lightning-datatable key-field="Id" data={obj.lstFieldPermissions}
-                                            columns={fieldCols} hide-checkbox-column>
-                                        </lightning-datatable>
+                                        <template if:true={obj.objectPermission}>
+                                            <h1>Object Permession</h1>
+                                            <lightning-datatable key-field="Id" data={obj.objectPermission}
+                                                columns={objectCols} hide-checkbox-column>
+                                            </lightning-datatable>
+                                        </template>
+                                        <template if:true={obj.lstFieldPermissions}>
+                                            <h1>Fields Permission</h1>
+                                            <lightning-datatable key-field="Id" data={obj.lstFieldPermissions}
+                                                columns={fieldCols} hide-checkbox-column>
+                                            </lightning-datatable>
+                                        </template>
                                     </lightning-accordion-section>
                                 </template>
                             </template>
