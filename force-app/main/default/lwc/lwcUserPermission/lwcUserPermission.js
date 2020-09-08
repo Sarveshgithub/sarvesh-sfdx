@@ -5,15 +5,14 @@ export default class LwcUserPermission extends LightningElement {
   @track objectAPIName = "Contact";
   @track fieldAPIName = "Field1__c";
   handleSearch(event) {
-    console.log(
-      "object name and field name",
-      this.objectAPIName,
-      this.fieldAPIName,
-      UserId
-    );
+    let objList = this.objectAPIName.replace(/\s/g, "").split(","),
+      fieldList = this.fieldAPIName.replace(/\s/g, "").split(",");
+    console.log("objList:::", objList);
+    console.log("fieldList:::", fieldList);
+    console.log("object name and field name", objList, fieldList, UserId);
     getUserPermission({
-      objectName: this.objectAPIName,
-      fieldAPI: this.fieldAPIName,
+      lstObjectName: objList,
+      lstFieldName: fieldList,
       userId: "0052w000002VemN"
     })
       .then((data) => {
