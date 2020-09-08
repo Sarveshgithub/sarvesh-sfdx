@@ -2,8 +2,24 @@ import { LightningElement, api, track } from "lwc";
 import UserId from "@salesforce/user/Id";
 import getUserPermission from "@salesforce/apex/UserPermissionsUtility.getUserPermission";
 export default class LwcUserPermission extends LightningElement {
+  @track fieldCols = [
+    { label: "Field", fieldName: "Field", type: "text" },
+    {
+      label: "PermissionsEdit",
+      fieldName: "PermissionsEdit",
+      type: "boolean"
+    },
+    {
+      label: "PermissionsRead",
+      fieldName: "PermissionsRead",
+      type: "boolean"
+    }
+  ];
   @track objectAPIName = "Contact";
-  @track fieldAPIName = "Field1__c";
+  @track fieldAPIName = "contact.Field1__c,contact.Field2__c,contact.Email";
+  @track profile;
+  @track permessionSet;
+  @track data;
   handleSearch(event) {
     let objList = this.objectAPIName.replace(/\s/g, "").split(","),
       fieldList = this.fieldAPIName.replace(/\s/g, "").split(",");
@@ -17,6 +33,7 @@ export default class LwcUserPermission extends LightningElement {
     })
       .then((data) => {
         console.log("data::", JSON.parse(JSON.stringify(data)));
+        this.data = JSON.parse(JSON.stringify(data));
       })
       .catch((error) => {});
   }
