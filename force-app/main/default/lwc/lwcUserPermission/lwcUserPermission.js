@@ -15,6 +15,39 @@ export default class LwcUserPermission extends LightningElement {
       type: "boolean"
     }
   ];
+  @track objectCols = [
+    { label: "Object", fieldName: "SobjectType", type: "text" },
+    {
+      label: "PermissionsRead",
+      fieldName: "PermissionsRead",
+      type: "boolean"
+    },
+    {
+      label: "PermissionsCreate",
+      fieldName: "PermissionsCreate",
+      type: "boolean"
+    },
+    {
+      label: "PermissionsEdit",
+      fieldName: "PermissionsEdit",
+      type: "boolean"
+    },
+    {
+      label: "PermissionsDelete",
+      fieldName: "PermissionsDelete",
+      type: "boolean"
+    },
+    {
+      label: "PermissionsViewAllRecords",
+      fieldName: "PermissionsViewAllRecords",
+      type: "boolean"
+    },
+    {
+      label: "PermissionsModifyAllRecords",
+      fieldName: "PermissionsModifyAllRecords",
+      type: "boolean"
+    }
+  ];
   @track objectAPIName = "Contact";
   @track fieldAPIName = "contact.Field1__c,contact.Field2__c,contact.Email";
   @track profile;

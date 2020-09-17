@@ -19,7 +19,7 @@ public with sharing class UserPermissionsUtility {
     @AuraEnabled
     public List<FieldPermissions> lstFieldPermissions { get; set; }
     @AuraEnabled
-    public ObjectPermissions objectPermission { get; set; }
+    public List<ObjectPermissions> objectPermission { get; set; }
     public PermissionWrapper(
       String recId,
       String permType,
@@ -29,7 +29,7 @@ public with sharing class UserPermissionsUtility {
       String permissionSetName,
       String profileName,
       List<FieldPermissions> lstFieldPermissions,
-      ObjectPermissions objectPermission
+      List<ObjectPermissions> objectPermission
     ) {
       this.recId = recId;
       this.permType = permType;
@@ -48,31 +48,29 @@ public with sharing class UserPermissionsUtility {
     List<String> lstFieldName,
     String userId
   ) {
+    List<String> lstObjectNameQuotes = new List<String>();
+    List<String> lstFieldNameQuotes = new List<String>();
     List<String> fieldCondition = new List<String>();
     List<String> objectCondition = new List<String>();
     Map<String, PermissionWrapper> mapPermission = new Map<String, PermissionWrapper>();
     String fieldSOQL = 'SELECT Id,SobjectType,Field,ParentId,PermissionsEdit,PermissionsRead,Parent.Name,Parent.IsOwnedByProfile,Parent.ProfileId,Parent.Profile.Name FROM FieldPermissions';
     if (lstObjectName.size() > 0) {
-      Integer objCount = 0;
       for (String obj : lstObjectName) {
-        lstObjectName[objCount] = '\'' + obj + '\'';
-        objCount++;
+        lstObjectNameQuotes.add('\'' + obj + '\'');
       }
       fieldCondition.add(
         ' SobjectType IN  (' +
-        String.join(lstObjectName, ',') +
+        String.join(lstObjectNameQuotes, ',') +
         ')'
       );
     }
     if (lstFieldName.size() > 0) {
-      Integer objCount = 0;
       for (String obj : lstFieldName) {
-        lstFieldName[objCount] = '\'' + obj + '\'';
-        objCount++;
+        lstFieldNameQuotes.add('\'' + obj + '\'');
       }
       fieldCondition.add(
         ' Field IN  (' +
-        String.join(lstFieldName, ',') +
+        String.join(lstFieldNameQuotes, ',') +
         ')'
       );
     }
@@ -100,7 +98,45 @@ public with sharing class UserPermissionsUtility {
             fieldPerm.Parent.Name,
             fieldPerm.Parent.Profile.Name,
             new List<FieldPermissions>{ fieldPerm },
-            null
+            new List<ObjectPermissions>()
+          )
+        );
+      }
+    }
+
+    for (ObjectPermissions objPerm : [
+      SELECT
+        Parent.Name,
+        ParentId,
+        Parent.IsOwnedByProfile,
+        Parent.ProfileId,
+        Parent.Profile.Name,
+        SobjectType,
+        PermissionsRead,
+        PermissionsCreate,
+        PermissionsDelete,
+        PermissionsEdit,
+        PermissionsViewAllRecords,
+        PermissionsModifyAllRecords
+      FROM ObjectPermissions
+      WHERE SobjectType IN :lstObjectName
+    ]) {
+      if (mapPermission.containsKey(objPerm.ParentId)) {
+        System.debug('data::::' + objPerm);
+        mapPermission.get(objPerm.ParentId).objectPermission.add(objPerm);
+      } else {
+        mapPermission.put(
+          objPerm.ParentId,
+          new PermissionWrapper(
+            objPerm.Id,
+            OBJECT_TYPE,
+            objPerm.Parent.ProfileId,
+            objPerm.ParentId,
+            objPerm.Parent.IsOwnedByProfile,
+            objPerm.Parent.Name,
+            objPerm.Parent.Profile.Name,
+            new List<FieldPermissions>(),
+            new List<ObjectPermissions>{ objPerm }
           )
         );
       }
