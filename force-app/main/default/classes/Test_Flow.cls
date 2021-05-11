@@ -1,19 +1,19 @@
 public class Test_Flow {
-    @InvocableMethod
-    public static void flowData(List<NHS_NotifyRequestBody> conData)
-    {
-        NHS_NotificationController.calloutNotificationAPI('email',null,'POST',JSON.serialize(conData));
-        System.debug('conData::::'+JSON.serialize(conData));
-    }
-    
-    public class FlowInputs{
-        @InvocableVariable
-        public String route;
-        @InvocableVariable
-        public String email_address;
-        @InvocableVariable
-        public String phone_number;
-        @InvocableVariable
-        public String template_id;        
+    public static void testPerms(){
+        for (FieldPermissions fieldPerm : [
+            SELECT
+            Id,
+            SobjectType,
+            Field,
+            ParentId,
+            Parent.Name,
+            Parent.IsOwnedByProfile,
+            Parent.ProfileId,
+            Parent.Profile.Name
+            FROM FieldPermissions
+            WHERE Field = 'Contact.field1__c' AND SobjectType = 'Contact'
+        ]) {
+            System.debug('data::::'+fieldPerm.Parent.IsOwnedByProfile);
+        }
     }
 }
