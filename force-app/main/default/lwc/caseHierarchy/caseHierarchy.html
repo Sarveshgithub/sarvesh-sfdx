@@ -1,0 +1,12 @@
+<template>
+
+
+    <!-- Simple -->
+    <div class="slds-p-around_medium">
+        <lightning-card variant="Narrow" title="Case Hierarchy" icon-name="standard:hierarchy">
+            <lightning-tree-grid columns={gridColumns} data={gridData} key-field="caseId" ontoggle={handleRowToggle}
+                hide-checkbox-column=true></lightning-tree-grid>
+        </lightning-card>
+    </div>
+
+</template>
