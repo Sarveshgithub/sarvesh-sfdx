@@ -1,4 +1,12 @@
+/**
+ * Class Name : CaseHierarchyControler
+ * About : Controler of caseHierarchy controller
+ */
 public with sharing class CaseHierarchyControler {
+  /**
+   * Class Name : caseData
+   * About : Structure case data
+   */
   public class caseData {
     @AuraEnabled
     public Id caseId;
@@ -30,6 +38,10 @@ public with sharing class CaseHierarchyControler {
     }
   }
 
+  /**
+   * Method Name : getCaseChildRecords()
+   * About : this method return wrapper of child cases
+   */
   @AuraEnabled
   public static List<caseData> getCaseChildRecords(Id parentId) {
     try {
