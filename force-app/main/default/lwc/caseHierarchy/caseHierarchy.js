@@ -1,6 +1,10 @@
+/**
+ * About : Case Hierarchy LWC
+ * Discription : Display child case hierarchy
+ */
 import { LightningElement, api, track } from "lwc";
 import getCaseChildRecords from "@salesforce/apex/CaseHierarchyControler.getCaseChildRecords";
-const EXAMPLES_COLUMNS_DEFINITION_BASIC = [
+const COLUMNS = [
   {
     label: "Case Number",
     type: "url",
@@ -22,12 +26,36 @@ const EXAMPLES_COLUMNS_DEFINITION_BASIC = [
 export default class CaseHierarchy extends LightningElement {
   @api recordId;
   @track error;
-  // definition of columns for the tree grid
-  @api gridColumns = EXAMPLES_COLUMNS_DEFINITION_BASIC;
-  // data provided to the tree grid
+  @api gridColumns = COLUMNS;
   @track gridData;
+
+  /**
+   * Method : connectedCallback
+   * Discription : loads one level childs case
+   */
   connectedCallback() {
-    getCaseChildRecords({ parentId: this.recordId })
+    this.fetchCaseRecords(this.recordId, true);
+  }
+
+  /**
+   * Method : handleRowToggle
+   * Discription : handle row action, loads cases on click on toggle
+   */
+  handleRowToggle(event) {
+    const rowName = event.detail.name;
+    const hasChildrenContent = event.detail.row.hasChildrenContent;
+    console.log(JSON.stringify(event.detail));
+    if (!event.detail.hasChildrenContent && event.detail.isExpanded) {
+      this.fetchCaseRecords(rowName, false);
+    }
+  }
+
+  /**
+   * Method : fetchCaseRecords
+   * Discription : get case data from apex
+   */
+  fetchCaseRecords(caseId, onLoad) {
+    getCaseChildRecords({ parentId: caseId })
       .then((data) => {
         if (data) {
           data = JSON.parse(JSON.stringify(data));
@@ -36,10 +64,17 @@ export default class CaseHierarchy extends LightningElement {
             if (e["hasChildrenContent"]) {
               e["_children"] = [];
             }
-            //delete e["hasChildrenContent"];
           });
-          console.log("data::::", data);
-          this.gridData = data;
+          console.log("data::", data);
+          if (onLoad) {
+            this.gridData = data;
+          } else {
+            this.gridData = this.getNewDataWithChildren(
+              caseId,
+              this.gridData,
+              data
+            );
+          }
         }
       })
       .catch((error) => {
@@ -50,50 +85,14 @@ export default class CaseHierarchy extends LightningElement {
           } else if (typeof error.body.message === "string") {
             this.error = error.body.message;
           }
-          console.log("error", this.error);
         }
       });
   }
 
-  handleRowToggle(event) {
-    const rowName = event.detail.name;
-    const hasChildrenContent = event.detail.row.hasChildrenContent;
-    console.log("id::", event.detail.row.hasChildrenContent);
-    console.log(JSON.stringify(event.detail));
-    // if (!event.detail.hasChildrenContent && event.detail.isExpanded) {
-      getCaseChildRecords({ parentId: rowName })
-        .then((data) => {
-          if (data) {
-            data = JSON.parse(JSON.stringify(data));
-            console.log("data:::", data);
-            data.map((e) => {
-              e["nameUrl"] = `/${e.caseId}`;
-              if (e["hasChildrenContent"]) {
-                e["_children"] = [];
-              }
-            });
-            this.gridData = this.getNewDataWithChildren(
-              rowName,
-              this.gridData,
-              data
-            );
-          }
-        })
-        .catch((error) => {
-          if (error) {
-            this.error = "Unknown error";
-            if (Array.isArray(error.body)) {
-              this.error = error.body.map((e) => e.message).join(", ");
-            } else if (typeof error.body.message === "string") {
-              this.error = error.body.message;
-            }
-            console.log("error", this.error);
-          }
-        });
-      //   this.data = getNewDataWithChildren(rowName, this.data, newChildren);
-    // }
-  }
-
+  /**
+   * Method : getNewDataWithChildren
+   * Discription : helper method
+   */
   getNewDataWithChildren(rowName, data, children) {
     return data.map((row) => {
       let hasChildrenContent = false;

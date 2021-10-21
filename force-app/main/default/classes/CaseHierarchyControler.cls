@@ -30,7 +30,7 @@ public with sharing class CaseHierarchyControler {
     }
   }
 
-  @AuraEnabled(cacheable=true)
+  @AuraEnabled
   public static List<caseData> getCaseChildRecords(Id parentId) {
     try {
       Map<Id, caseData> mapOfCaseData = new Map<Id, caseData>();
