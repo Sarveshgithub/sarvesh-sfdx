@@ -3,13 +3,15 @@
         <!-- Main Card -->
         <lightning-card variant="Narrow" title="Case Hierarchy" icon-name="standard:hierarchy">
             <!-- Grid Card -->
-            <lightning-tree-grid 
-                columns={gridColumns} 
-                data={gridData} 
-                key-field="caseId" 
-                ontoggle={handleRowToggle}
-                hide-checkbox-column=true>
-            </lightning-tree-grid>
+            <template if:true={gridData}>
+                <lightning-tree-grid 
+                    columns={gridColumns} 
+                    data={gridData} 
+                    key-field="caseId" 
+                    ontoggle={handleRowToggle}
+                    hide-checkbox-column=true>
+                </lightning-tree-grid>
+            </template>
         </lightning-card>
     </div>
 </template>
