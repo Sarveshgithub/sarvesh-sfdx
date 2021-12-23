@@ -1,0 +1,62 @@
+<template>
+    <lightning-card title="Schedule Invoice Generation Job" icon-name="standard:apex">
+        <lightning-button-icon icon-name="utility:refresh" slot="actions" name="refresh" onclick={getScheduledCron}>
+        </lightning-button-icon>
+        <div class="slds-p-horizontal--large">
+            <template if:true={loading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+            <template if:false={jobDetail}>
+                <p class="slds-text-heading--medium">The job is not currently scheduled.</p>
+            </template>
+            <div class="slds-grid">
+                <div class="slds-col slds-p-around--medium slds-size_1-of-2">
+                    <lightning-input type="time" name="time" label="When would you like to schedule the sync" required
+                        onchange={handleTimeChange}>
+                    </lightning-input>
+                    <div class="slds-p-top--x-small">
+                        <lightning-button if:false={jobDetail} label="Schedule Job" name="Schedule Job"
+                            onclick={scheduleApexJob} disabled={disableButton}>
+                        </lightning-button>
+                        <lightning-button if:true={jobDetail} label="ReSchedule Job" name="ReSchedule Job"
+                            onclick={reScheduleApexJob} disabled={disableButton}>
+                        </lightning-button>
+
+                        <lightning-button if:true={jobDetail} label="Delete Job" name="Delete Job" onclick={deleteJob}>
+                        </lightning-button>
+                    </div>
+                    <!-- Your lightning-output-field components here -->
+                </div>
+                <div class="slds-col slds-p-around--medium slds-size_1-of-2">
+                    <template if:true={jobDetail}>
+                        <h1 class="slds-text-heading--medium">Job Details</h1>
+                        <div class="slds-p-top_x-small">
+                            <p if:true={jobDetail.StartTime}>Schedule At :
+                                <lightning-formatted-date-time year="numeric" month="numeric" day="numeric"
+                                    value={jobDetail.StartTime} hour="2-digit" minute="2-digit">
+                                </lightning-formatted-date-time>
+                            </p>
+                            <p if:true={jobDetail.State}>State : {jobDetail.State}
+                            </p>
+                            <p if:true={jobDetail.NextFireTime}>Next Fire Time :
+                                <lightning-formatted-date-time value={jobDetail.NextFireTime} year="numeric"
+                                    month="numeric" day="numeric" hour="2-digit" minute="2-digit">
+                                </lightning-formatted-date-time>
+                            </p>
+                            <p if:true={jobDetail.PreviousFireTime}>Previous Fire Time :
+                                <lightning-formatted-date-time value={jobDetail.PreviousFireTime} year="numeric"
+                                    month="numeric" day="numeric" hour="2-digit" minute="2-digit">
+                                </lightning-formatted-date-time>
+                            </p>
+                        </div>
+                    </template>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </lightning-card>
+
+</template>
