@@ -67,6 +67,7 @@ export default class LwcInvoiceScheduler extends LightningElement {
           this.stopLoading(500);
           console.log("Unable to Schedule Job");
         }
+        
       })
       .catch((error) => {
         this.stopLoading(500);
