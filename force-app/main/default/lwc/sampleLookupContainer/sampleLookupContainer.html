@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Lookup component">
+        <div class="slds-form slds-form_stacked slds-var-m-around_xx-large">
+            <c-lookup
+                
+                errors={errors}
+                onsearch={handleLookupSearch}
+                onselectionchange={handleLookupSelectionChange}
+                label="Search"
+                placeholder="Search Salesforce"
+                required
+            >
+            </c-lookup>
+        </div>
+    </lightning-card>
+</template>

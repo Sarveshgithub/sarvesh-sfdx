@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="sampleLookupContainer">
+    <apiVersion>54.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="objectName" label="Object Name" type="String" role="inputOnly" required="ture" />
+            <property name="iconName" label="Icon Name" type="String" role="inputOnly" required="ture" />
+        </targetConfig>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="objectName" label="Object Name" type="String" required="ture"  />
+            <property name="iconName" label="Icon Name" type="String" required="ture"  />
+        </targetConfig>
+        <targetConfig targets="lightning__HomePage">
+            <property name="objectName" label="Object Name" type="String" required="ture" />
+            <property name="iconName" label="Icon Name" type="String" required="ture" />
+        </targetConfig>
+ </targetConfigs>
+</LightningComponentBundle>

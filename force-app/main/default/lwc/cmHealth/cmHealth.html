@@ -1,0 +1,62 @@
+<template>
+  <div>
+    <lightning-card title="CM Health"  class="slds-card_boundary">
+      <lightning-layout>
+        <lightning-layout-item padding="around-small" size="2">
+          <lightning-layout multiple-rows="true" style="text-align: center">
+            <lightning-layout-item size="12">
+              <lightning-progress-ring
+                value="40"
+                size="large"
+              ></lightning-progress-ring>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+              <div>4/10</div>
+            </lightning-layout-item>
+          </lightning-layout>
+        </lightning-layout-item>
+        <lightning-layout-item size="10">
+          <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12">
+              <lightning-layout>
+                <lightning-layout-item padding="around-small" size="6">
+                  <div class="card slds-var-p-around_small">
+                    <h1>Flag Top CM Risks</h1>
+                  </div>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="6">
+                  <div class="card slds-var-p-around_small">
+                    <h1>PMS Integration</h1>
+                  </div>
+                </lightning-layout-item>
+              </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small" size="12">
+              <div class="card slds-var-p-around_small">
+                <h1>Connected Channels</h1>
+                <lightning-avatar
+                  variant="circle"
+                  src="https://www.lightningdesignsystem.com/assets/images/avatar2.jpg"
+                  initials="AW"
+                  fallback-icon-name="standard:person_account"
+                  alternative-text="Amy Weaver"
+                  class="slds-var-m-right_small"
+                ></lightning-avatar>
+              </div>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small" size="12">
+              <div class="card slds-var-p-around_small">
+                <h1>Disabled Channels</h1>
+              </div>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small" size="12">
+              <div class="card slds-var-p-around_small">
+                <h1>Recommended Channels</h1>
+              </div>
+            </lightning-layout-item>
+          </lightning-layout>
+        </lightning-layout-item>
+      </lightning-layout>
+    </lightning-card>
+  </div>
+</template>

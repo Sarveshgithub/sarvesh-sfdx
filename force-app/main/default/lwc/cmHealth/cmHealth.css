@@ -1,0 +1,23 @@
+.CLASSIC {
+    min-width: 66rem;
+  }
+  .LARGE {
+    min-width: 40rem;
+  }
+  .SMALL {
+    min-width: 15rem;
+  }
+  .progress-ring {
+    transform: scale(4) translate(1em,1em);
+    position: absolute
+}
+.card {
+    background-color:  #F3F3F3;
+}
+.slds-progress-ring__path {
+    r: 0;
+}
+.container {
+  display: block;
+  /* border: 2px solid rgb(101, 153, 205); */
+}
