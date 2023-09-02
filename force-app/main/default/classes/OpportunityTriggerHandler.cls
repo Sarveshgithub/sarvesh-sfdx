@@ -1,13 +1,14 @@
 public class OpportunityTriggerHandler {
-    public static void handleBeforeInsert(List<Opportunity> newList) {
+    public static void handleBeforeInsert(List<Opportunity> newList) { 
         // Add your before insert logic here
         Set<Id> accIds = new Set<Id>();
+            for(Opportunity objOpp : newList){
+                accIds.add(objOpp.AccountId);  
+            }
+        Map<Id,Account> mapOfAccount = new Map<Id,Account>([SELECT id,Name from Account where Id = : accIds]);
         for(Opportunity objOpp : newList){
-            accIds.add(objOpp.AccountId);
-        }
-        Map<Id,Account> mapOfAccount = new Map<Id,Account>([SELECT id,name from Account where Id = : accIds]);
-        for(Opportunity objOpp : newList){
-            objOpp.Name = objOpp.Name +' | ' + mapOfAccount.get(objOpp.AccountId);
+            String accountName = mapOfAccount.get(objOpp.AccountId).Name;
+            objOpp.Name = objOpp.Name +' | ' + accountName;
         }
     }
 
